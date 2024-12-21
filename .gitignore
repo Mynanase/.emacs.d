@@ -1,0 +1,12 @@
+# ~/.emacs.d/.gitignore
+auto-save-list/
+elpa/
+eshell/
+.cache/
+*~
+*.elc
+session.*
+tramp
+url/
+.DS_Store
+.last-package-update-day
