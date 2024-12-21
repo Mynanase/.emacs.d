@@ -8,6 +8,9 @@
 (menu-bar-mode -1)
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
+
+;; 括号自动补全
+(electric-pair-mode t)
 ;; shut off 
 (setq inhibit-startup-screen t)
 
