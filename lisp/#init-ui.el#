@@ -21,12 +21,12 @@
 (set-face-attribute 'default nil
                     :font (font-spec :family "Inconsolata Nerd Font"
                                      :weight 'normal)
-		    :height 120)
+		    :height 130)
 
 (dolist (charset '(kana han symbol cjk-misc bopomofo))
   (set-fontset-font (frame-parameter nil 'font)
 		    charset
-		    (font-spec :family "QiushuiShotai" :height 120)))
+		    (font-spec :family "QiushuiShotai" :height 130)))
 
 (set-fontset-font t 'symbol "Segoe UI Emoji")
 
