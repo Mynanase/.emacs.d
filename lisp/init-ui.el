@@ -5,11 +5,9 @@
   ;; 全局主题设置
   (setq doom-themes-enable-bold t    ; 如果为 nil，将禁用粗体
         doom-themes-enable-italic t)  ; 如果为 nil，将禁用斜体
-  
+
   (load-theme 'doom-city-lights t)
-  (doom-themes-visual-bell-config)
-  (doom-themes-org-config)
-  (doom-themes-neotree-config))
+  (doom-themes-org-config))
 
 (use-package smart-mode-line
   :init
@@ -17,18 +15,17 @@
         sml/theme 'respectful)
   (sml/setup))
 
-;; 中英文字体, 字符串
+;; 中英文字体, 字符串ff
 (set-face-attribute 'default nil
-                    :font (font-spec :family "Inconsolata Nerd Font"
-                                     :weight 'normal)
-		    :height 120)
+                    :font (font-spec :family "Inconsolata Nerd Font Mono")
+		    :height 140)
 
 (dolist (charset '(kana han symbol cjk-misc bopomofo))
   (set-fontset-font (frame-parameter nil 'font)
 		    charset
-		    (font-spec :family "QiushuiShotai" :height 120)))
+		    (font-spec :family "华文楷体" :height 140)))
 
-(set-fontset-font t 'symbol "Segoe UI Emoji")
+;; (set-fontset-font t 'symbol "Segoe UI Emoji")
 
 ;; 设置中文字体
 ;; (dolist (charset '(kana han symbol cjk-misc bopomofo))
@@ -41,8 +38,12 @@
 (setq-default line-spacing 0.2)
 
 ;; 启动相对行号
-(add-hook 'prog-mode-hook 'display-line-numbers-mode)
+(add-hook 'prog-mode-hook 'column-number-mode) ;在ModeLine显示列号
+(add-hook 'prog-mode-hook 'display-line-numbers-mode) ;显示行号
+(add-hook 'prog-mode-hook 'electric-pair-mode) ;括号的配对
+(add-hook 'prog-mode-hook 'flymake-mode) ;错误的提示
+(add-hook 'prog-mode-hook 'hs-minor-mode) ;代码的折叠
+;; (add-hook 'prog-mode-hook 'prettify-symbols-mode) ;会将lambda等符号美化为λ
 (setq display-line-numbers-type 'relative)
 
 (provide 'init-ui)
-
