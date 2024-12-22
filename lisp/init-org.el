@@ -7,16 +7,47 @@
 	org-support-shift-select t
 	org-hide-leading-stars t))
 
-;; Latex
-(setq org-preview-latex-image-directory "~/.latex-figs/") ;; 设置缓存目录
+(add-hook 'org-mode-hook (lambda ()
+			   ;; (visual-line-mode)
+			   (org-cdlatex-mode)
+			   (setq line-spacing 0.2)
+			   ))
 
+;;; org-latex-preview
+;; init
+(setq org-startup-with-inline-images t
+      org-startup-with-latex-preview t)
+
+(use-package tex :ensure auctex)
+
+;; cdlatex
 (use-package cdlatex
   :ensure t
   :hook (org-mode . turn-on-org-cdlatex))
 
+;; latex image path
+(setq org-preview-latex-image-directory "~/.latex-cache/")
+
+(setq org-latex-preview-numbered t)
+(plist-put org-latex-preview-options :zoom 1.25)
+(let ((pos (assoc 'dvisvgm org-latex-preview-process-alist)))
+      (plist-put (cdr pos) :image-converter '("dvisvgm --page=1- --optimize --clipjoin --relative --no-fonts --bbox=preview -o %B-%%9p.svg %f")))
+;; org latex package
 (setq-default org-latex-packages-alist '(("" "physics" t)
                                          ("" "amsmath" t)
                                          ("margin=1in" "geometry" t)))
+
+
+(setq org-highlight-latex-and-related '(native)) ; Highlight inline LaTeX code
+(setq org-use-sub-superscripts '{})
+
+
+;; org-cdlatex-mode 中使用 cdlatex 的自动匹配括号, 并把 $...$ 换成 \( ... \)
+(defun my/insert-inline-OCDL ()
+  (interactive)
+  (insert "\\(")
+  (save-excursion (insert "\\)" )))
+(define-key org-cdlatex-mode-map (kbd "$") 'my/insert-inline-OCDL)
 
 ;; 当光标
 ;; (use-package org-fragtog
@@ -25,7 +56,6 @@
 ;;   )
 
 ;; (setq org-preview-latex-default-process 'dvisvgm)
-
 ;; latex 相关
 ;; (setq
 ;;  my/latex-preview-scale 1.2
@@ -39,39 +69,6 @@
 ;; 					:html-background "Transparent"
 ;; 					:html-scale ,my/latex-preview-scale
 ;; 					:matchers ("begin" "$1" "$" "$$" "\\(" "\\[")))
-
-(add-hook 'org-mode-hook (lambda ()
-			   ;; (visual-line-mode)
-			   (org-cdlatex-mode)
-			   (setq line-spacing 0.2)
-			   ))
-
-;; org-cdlatex-mode 中使用 cdlatex 的自动匹配括号, 并把 $...$ 换成 \( ... \)
-;; (defun my/insert-inline-OCDL ()
-;;   (interactive)
-;;   (insert "\\(")
-;;   (save-excursion (insert "\\)" )))
-;; (defun my/insert-dollar-OCDL ()
-;;   (interactive)
-;;   (insert "$")
-;;   (save-excursion (insert "$" )))
-;; (defun my/insert-bra-OCDL ()
-;;   (interactive)
-;;   (insert "(")
-;;   (save-excursion (insert ")" )))
-;; (defun my/insert-sq-bra-OCDL ()
-;;   (interactive)
-;;   (insert "[")
-;;   (save-excursion (insert "]" )))
-;; (defun my/insert-curly-bra-OCDL ()
-;;   (interactive)
-;;   (insert "{")
-;;   (save-excursion (insert "}" )))
-
-;; (define-key org-cdlatex-mode-map (kbd "$") 'my/insert-inline-OCDL)
-;; (define-key org-cdlatex-mode-map (kbd "(") 'my/insert-bra-OCDL)
-;; (define-key org-cdlatex-mode-map (kbd "[") 'my/insert-sq-bra-OCDL)
-;; (define-key org-cdlatex-mode-map (kbd "{") 'my/insert-curly-bra-OCDL)
 
 ;; org-appear
 (use-package org-appear
