@@ -2,16 +2,26 @@
   :ensure nil
   :load-path "~/.emacs.d/dev/org-mode/lisp"
   :config
-  (setq org-directory (file-truename "~/Org/")
-	org-hide-emphasis-markers t
-	org-support-shift-select t
-	org-hide-leading-stars t))
+  (setq
+   org-directory (file-truename "~/Org/")
+   org-hide-emphasis-markers t
+   org-support-shift-select t
+   org-ellipsis "..")
+  )
+
+;; (custom-set-faces
+;;  '(org-level-1 ((t (:family "MiSans" :weight bold))))
+;;  '(org-level-2 ((t (:family "MiSans" :weight bold))))
+;;  '(org-bold ((t (:family "MiSans" :weight bold))))
+;;  '(bold ((t (:family "MiSans" :weight bold)))))
 
 (add-hook 'org-mode-hook (lambda ()
 			   ;; (visual-line-mode)
 			   (org-cdlatex-mode)
 			   (setq line-spacing 0.2)
 			   ))
+
+(add-hook 'org-mode-hook #'org-latex-preview-auto-mode)
 
 ;;; org-latex-preview
 ;; init
@@ -26,12 +36,17 @@
   :hook (org-mode . turn-on-org-cdlatex))
 
 ;; latex image path
-(setq org-preview-latex-image-directory "~/.latex-cache/")
+(setq
+ ;; org latex preview
+ org-latex-preview-cache 'temp
+ org-latex-preview-live '(inline block edit-special)
+ org-latex-preview-live-display-type 'buffer
+ )
 
-(setq org-latex-preview-numbered t)
-(plist-put org-latex-preview-options :zoom 1.25)
+;; (setq org-latex-preview-numbered t)
+					; (plist-put org-latex-preview-options :zoom 1.25)
 (let ((pos (assoc 'dvisvgm org-latex-preview-process-alist)))
-      (plist-put (cdr pos) :image-converter '("dvisvgm --page=1- --optimize --clipjoin --relative --no-fonts --bbox=preview -o %B-%%9p.svg %f")))
+  (plist-put (cdr pos) :image-converter '("dvisvgm --page=1- --optimize --clipjoin --relative --no-fonts --bbox=preview -o %B-%%9p.svg %f")))
 ;; org latex package
 (setq-default org-latex-packages-alist '(("" "physics" t)
                                          ("" "amsmath" t)
@@ -41,34 +56,12 @@
 (setq org-highlight-latex-and-related '(native)) ; Highlight inline LaTeX code
 (setq org-use-sub-superscripts '{})
 
-
 ;; org-cdlatex-mode 中使用 cdlatex 的自动匹配括号, 并把 $...$ 换成 \( ... \)
 (defun my/insert-inline-OCDL ()
   (interactive)
   (insert "\\(")
   (save-excursion (insert "\\)" )))
 (define-key org-cdlatex-mode-map (kbd "$") 'my/insert-inline-OCDL)
-
-;; 当光标
-;; (use-package org-fragtog
-;;   :hook (org-mode . org-fragtog-mode)
-;;   :config
-;;   )
-
-;; (setq org-preview-latex-default-process 'dvisvgm)
-;; latex 相关
-;; (setq
-;;  my/latex-preview-scale 1.2
-;;  org-startup-with-latex-preview t
-;;  org-highlight-latex-and-related '(native latex entities)
-;;  org-pretty-entities-include-sub-superscripts nil
-;;  org-format-latex-options `(:foreground default
-;; 					:background default
-;; 					:scale ,my/latex-preview-scale
-;; 					:html-foreground "Black"
-;; 					:html-background "Transparent"
-;; 					:html-scale ,my/latex-preview-scale
-;; 					:matchers ("begin" "$1" "$" "$$" "\\(" "\\[")))
 
 ;; org-appear
 (use-package org-appear
@@ -81,21 +74,39 @@
   :ensure t
   :hook
   (org-mode . org-modern-mode)
-  (org-agenda-finalize . org-modern-agenda)
-  :custom
-  (org-modern-star nil)
-  (org-modern-priority nil)
-  (org-modern-list nil)
-  (org-modern-checkbox nil)
-  (org-modern-todo nil)
-  (org-modern-keyword nil)
+  (org-agenda-finalize . org-modern-agenda))
 
-  ;; Editor settings
-  (org-auto-align-tags nil)
-  (org-tags-column 0)
-  (org-catch-invisible-edits 'show-and-error)
-  (org-special-ctrl-a/e t)
-  )
+(setq
+ ;; Styling
+ org-modern-star 'fold
+ ; org-modern-hide-stars 'leading
+ org-modern-fold-stars '(("" . "")
+			 ("" . "")
+			 ("" . "")
+			 ("" . "")
+			 ("" . ""))
+
+ org-modern-list '((43 . "󰫢")
+ 		   (45 . ""))
+
+ org-modern-block-name '(("export" "" "")
+  			("example" "󰌵" "󰌵")
+  			("verse" "" "")
+  			("comment" "" "")
+  			("src" "" "")
+  			("quote" "" "")
+  			(t . t))
+ 
+ org-modern-todo t
+ org-modern-keyword nil
+ org-modern-checkbox nil
+
+ ;; Editor settings
+ org-auto-align-tags nil
+ org-tags-column 0
+ org-catch-invisible-edits 'show-and-error
+ org-special-ctrl-a/e t
+ )
 
 ;; src prettify
 ;; (setq prettify-symbols-alist
@@ -164,7 +175,7 @@
 (setq org-roam-capture-templates
       `(("m" "main" plain "%?"
          :if-new (file+head "main/${slug}.org"
-                            "#+DATE: <%<%Y-%m-%d %H:%M>>\n#+filetags: :daily:\n#+title: ${title}")
+                            "#+DATE: <%<%Y-%m-%d %H:%M>>\n#+title: ${title}")
          :immediate-finish t
          :unnarrowed t)
         ("r" "reference" plain "%?"
@@ -184,20 +195,18 @@
          :unnarrowed t)))
 
 (setq org-roam-node-display-template
-      (concat "${type:15} ${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
+      (concat "${type:15} ${title:*} " (propertize "${tags:20}" 'face 'org-tag)))
 
 ;; org-roam-ui
 (use-package org-roam-ui
   :ensure t
   :after org-roam
   :custom
-  ;; 自定义 org-roam-ui 选项
-  (setq org-roam-ui-sync-theme t
-        org-roam-ui-follow t
-        org-roam-ui-update-on-save t
-        org-roam-ui-open-on-start nil)
+  (org-roam-ui-sync-theme t)
+  (org-roam-ui-follow t)
+  (org-roam-ui-update-on-save t)
+  (org-roam-ui-open-on-start nil)
   :config
-  ;; 启动 org-roam-ui 服务器
   (org-roam-ui-mode))
 
 (provide 'init-org)
