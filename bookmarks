@@ -3,9 +3,9 @@
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
 (("org-capture-last-stored"
- (filename . "~/Org/roam/articles/typst bot 开发.org")
- (front-context-string)
- (rear-context-string . "e: typst bot 开发\n")
- (position . 139)
- (last-modified 26473 39439 171611 0))
+ (filename . "~/Org/roam/daily/2024-12-24.org")
+ (front-context-string . "* 07:54 下午: 配置华为")
+ (rear-context-string . "tle: 2024-12-24\n")
+ (position . 115)
+ (last-modified 26474 41214 223019 0))
 )
