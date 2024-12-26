@@ -3,9 +3,9 @@
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
 (("org-capture-last-stored"
- (filename . "~/Org/roam/daily/2024-12-24.org")
- (front-context-string . "* 07:54 下午: 配置华为")
- (rear-context-string . "tle: 2024-12-24\n")
- (position . 115)
- (last-modified 26474 41214 223019 0))
+ (filename . "~/Org/roam/main/如何获取最新的gist提交.org")
+ (front-context-string)
+ (rear-context-string . ": 如何获取最新的gist提交\n")
+ (position . 118)
+ (last-modified 26477 11264 77035 0))
 )
