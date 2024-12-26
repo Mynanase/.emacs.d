@@ -32,8 +32,7 @@
 
 ;; cdlatex
 (use-package cdlatex
-  :ensure t
-  :hook (org-mode . turn-on-org-cdlatex))
+  :ensure t  :hook (org-mode . turn-on-org-cdlatex))
 
 ;; latex image path
 (setq

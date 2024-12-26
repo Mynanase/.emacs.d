@@ -15,15 +15,15 @@
         sml/theme 'respectful)
   (sml/setup))
 
-;; 中英文字体, 字符串ff
+;; 中英文字体, 字符串 ff  ff i dsd f 0d d sdsfassd
 (set-face-attribute 'default nil
-                    :font (font-spec :family "Inconsolata Nerd Font Mono")
-		    :height 140)
+                    :font (font-spec :family "Maple Mono Normal NF CN")
+		    :height 120)
 
-(dolist (charset '(kana han symbol cjk-misc bopomofo))
-  (set-fontset-font (frame-parameter nil 'font)
-		    charset
-		    (font-spec :family "华文楷体" :height 140)))
+;; (dolist (charset '(kana han symbol cjk-misc bopomofo))
+;;   (set-fontset-font (frame-parameter nil 'font)
+;; 		    charset
+;; 		    (font-spec :family "华文楷体" :height 140)))
 
 ;; (set-fontset-font t 'symbol "Segoe UI Emoji")
 
